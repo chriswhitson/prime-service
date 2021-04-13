@@ -3,3 +3,5 @@ Microservice to calculate prime numbers
 
 # Building
 `mvn clean package`
+
+# Running
