@@ -17,6 +17,14 @@ public class PrimeCalculatorTest {
     }
 
     @Test
+    void shouldReturnTwoIfLimitIs2() {
+        List<Integer> primes = underTest.calculatePrimes(2);
+
+        assertThat(primes)
+                .containsExactly(2);
+    }
+
+    @Test
     void shouldReturnListOfPrimes() {
         List<Integer> primes = underTest.calculatePrimes(30);
 

@@ -5,14 +5,17 @@ Microservice to calculate prime numbers
 ``` 
 mvn clean package
 ```
+* __Java version__: 11
+* __Maven version__: 3.6.3
 
 ## Running
 ```
-java -jar target/prime-service-0.0.1-SNAPSHOT.jar 
+ java -jar target/prime-service-0.0.1.jar 
 ```
+The service runs on port __8080__
 
 ## API
-__port__: 8080
+
 
 #### GET /primes
 

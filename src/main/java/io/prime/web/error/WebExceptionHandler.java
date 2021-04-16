@@ -1,16 +1,15 @@
 package io.prime.web.error;
 
 
-import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolation;
@@ -20,7 +19,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
-public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class WebExceptionHandler extends ResponseEntityExceptionHandler {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(WebExceptionHandler.class);
 
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -32,16 +33,11 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return buildErrorResponse(HttpStatus.BAD_REQUEST, errors);
     }
 
-    // error handle for @Valid
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers,
-                                                                  HttpStatus status, WebRequest request) {
-        List<String> errors = ex.getBindingResult().getFieldErrors().stream()
-                                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                                .collect(Collectors.toList());
-
-        return buildErrorResponse(status, errors);
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<Object> handleUncaughtException(Exception ex) {
+        LOGGER.error("Unhandled exception occurred. Raising internal server error", ex);
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, Collections.emptyList());
     }
 
     @Override
