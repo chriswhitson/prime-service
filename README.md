@@ -17,9 +17,8 @@ The service runs on port __8080__
 ## API
 
 
-#### GET /primes
+#### `GET /primes`
 
------------------------------------------
 | request param | required? | validation |
 |---------------|-----------|-------|
 | limit         | yes       | \>=2  |
