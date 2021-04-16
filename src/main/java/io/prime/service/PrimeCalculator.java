@@ -23,8 +23,7 @@ public class PrimeCalculator {
         boolean[] primeFlags = new boolean[limit + 1];
         Arrays.fill(primeFlags, true);
 
-        double limitSqrt = Math.sqrt(limit);
-        for (int candidate = 2; candidate < limitSqrt; candidate++) {
+        for (int candidate = 2; candidate * candidate <= limit; candidate++) {
             if (primeFlags[candidate]) {
                 // all multiple of this prime number are not prime number, so negate their prime flag
                 // start at candidate^2 as lower multiples will already have been negated.

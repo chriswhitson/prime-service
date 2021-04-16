@@ -12,7 +12,7 @@ public class PrimeCalculatorTest {
     private final PrimeCalculator underTest = new PrimeCalculator();
 
     @Test
-    void shouldNotAllowLimitsBelowTwo() {
+    void shouldNotAllowLimitBelowTwo() {
         assertThatIllegalArgumentException().isThrownBy(() -> underTest.calculatePrimes(1));
     }
 
@@ -22,6 +22,15 @@ public class PrimeCalculatorTest {
 
         assertThat(primes)
                 .containsExactly(2, 3, 5, 7, 11, 13, 17, 19, 23, 29);
+    }
+
+    @Test
+    void shouldNotReturnLimitIfLimitIsASquareOfAPrime() {
+        // edge case found where if the limit is a square of a prime, it was returning the limit
+        List<Integer> primes = underTest.calculatePrimes(9);
+
+        assertThat(primes)
+                .containsExactly(2, 3, 5, 7);
     }
 
     @Test
